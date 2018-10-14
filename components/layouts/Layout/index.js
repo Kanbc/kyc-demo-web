@@ -11,12 +11,12 @@ const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
     <Head>
       <title>{`Codefin - ${title}`}</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-      <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-      <link rel="apple-touch-icon" sizes="180x180" href="/statics/img/favicon/apple-touch-icon.png" />
-      <link rel="icon" type="image/png" sizes="32x32" href="/statics/img/favicon/favicon-32x32.png" />
-      <link rel="icon" type="image/png" sizes="16x16" href="/statics/img/favicon/favicon-16x16.png" />
-      <link rel="manifest" href="/statics/img/favicon/site.webmanifest" />
-      <link rel="mask-icon" href="/statics/img/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+      <link rel='shortcut icon' type='image/x-icon' href='/static/img/favicon/favicon.ico' />
+      <link rel="apple-touch-icon" sizes="180x180" href="/static/img/favicon/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png" />
+      <link rel="manifest" href="/static/img/favicon/site.webmanifest" />
+      <link rel="mask-icon" href="/static/img/favicon/safari-pinned-tab.svg" color="#5bbad5" />
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="#ffffff" />
       <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet" />
@@ -38,7 +38,7 @@ const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
       .root {
         position:relative;
         width: 100%;
-        height: 100vh;
+        min-height: 100vh;
         background-color:#000;
       }
       .boxHeader{
