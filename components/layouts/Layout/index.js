@@ -1,7 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
 import moment from 'moment';
-import TopNavbar from './TopNavbar';
 import Footer from './Footer';
 
 moment.locale('th');
@@ -59,12 +58,6 @@ const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
       .page-container {
         text-align:center;
         padding: 25px 25px 100px 25px;
-      }
-      @media (max-width: 992px) { 
-        
-      }
-      @media (max-width: 576px) { 
-        
       }
     `}
     </style>

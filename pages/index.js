@@ -5,6 +5,8 @@ import moment from 'moment';
 import { Layout } from '../components';
 import { setFieldData } from '../store';
 
+import 'antd/dist/antd.css';
+
 class Index extends Component {
   state = {
     currentDate: moment(),
@@ -13,7 +15,7 @@ class Index extends Component {
   render() {
     return (
       <Layout title="Automatic Filling Machine (IDCard)">
-        <div>
+        <div className="bodyBox">
           <Row>
             <Col span={12}>col-12</Col>
             <Col span={12}>col-12</Col>
@@ -33,26 +35,17 @@ class Index extends Component {
        
         <style jsx>
           {`
-            .header {
-              height: 60px;
-            }
-            .pick-td-btn {
-              margin-left: 10px;
-            }
-            .stadiums-wrapper {
-              height: calc(100vh - 150px);
-              padding: 20px 0;
-              overflow-y: scroll;
-              -webkit-overflow-scrolling: touch;
-              white-space: nowrap;
-              padding-right: 5%;
-              .item {
-                margin-right: 15px;
-                height: 100%;
-              }
+            .bodyBox {
+              padding-top:50px;
+              
             }
           `}
         </style>
+        <style jsx global>{`
+          body {
+            color:#fff;
+          }
+        `}</style>
       </Layout>
     );
   }
