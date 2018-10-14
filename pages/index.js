@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import DatePicker from 'react-datepicker';
+import { Row, Col } from 'antd';
 import moment from 'moment';
-import { Layout, DatePickerButton, StadiumBookingColumn, Loader, Constant } from '../components';
+import { Layout } from '../components';
 import { setFieldData } from '../store';
 
 class Index extends Component {
@@ -11,14 +11,26 @@ class Index extends Component {
   }
 
   render() {
-    const { fields } = this.props;
-    console.log('render!', fields);
-
     return (
       <Layout title="Automatic Filling Machine (IDCard)">
-        <div className="d-flex align-items-center header">
-          <h5 style={{ margin: '0 10px' }}>รายการของ : </h5>
+        <div>
+          <Row>
+            <Col span={12}>col-12</Col>
+            <Col span={12}>col-12</Col>
+          </Row>
+          <Row>
+            <Col span={8}>col-8</Col>
+            <Col span={8}>col-8</Col>
+            <Col span={8}>col-8</Col>
+          </Row>
+          <Row>
+            <Col span={6}>col-6</Col>
+            <Col span={6}>col-6</Col>
+            <Col span={6}>col-6</Col>
+            <Col span={6}>col-6</Col>
+          </Row>
         </div>
+       
         <style jsx>
           {`
             .header {

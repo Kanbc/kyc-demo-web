@@ -2,6 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 import moment from 'moment';
 import TopNavbar from './TopNavbar';
+import Footer from './Footer';
 
 moment.locale('th');
 
@@ -20,36 +21,50 @@ const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
       <meta name="theme-color" content="#ffffff" />
       <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet" />
     </Head>
-    <TopNavbar/>
-    <div className="content d-flex flex-row">
-      <div className="page-container">
-        {children}
+    <div className="page-container">
+      <div className="boxHeader">
+        <h1><a href="/">Automatic Filling Machine (IDCard)</a></h1>
       </div>
+      {children}
     </div>
+    <Footer />
+    <style jsx global>{`
+      body {
+        margin:0;
+        padding:0;
+      }
+    `}</style>
     <style jsx>{`
       .root {
-        width: 100vw;
+        position:relative;
+        width: 100%;
         height: 100vh;
-        overflow: hidden;
+        background-color:#000;
+      }
+      .boxHeader{
+        display:inline-flex;
+      }
+      h1{
+        margin: 10px auto 10px auto;
+        border-bottom: solid 1px #fff;
+        padding-bottom: 15px;
+        a{
+          color:#fff;
+          text-decoration: none;
+          font-family: montserrat;
+          font-size: 22px;
+          font-weight: 500;
+        }
       }
       .page-container {
+        text-align:center;
         padding: 25px 25px 100px 25px;
-        overflow: hidden;
-        width: calc(100% - 220px);
-        height: 100vh; 
-        overflow-y: scroll;
       }
       @media (max-width: 992px) { 
-        .page-container {
-          padding: 25px 25px 100px 25px;
-          width: 100%;
-        }
+        
       }
       @media (max-width: 576px) { 
-        .page-container {
-          padding: 10px 10px 50px 10px;
-          width: 100%;
-        }
+        
       }
     `}
     </style>
