@@ -1,0 +1,18 @@
+.ant-upload {
+    width: 100% !important;
+    height: 300px !important;
+    background-color: #000 !important;
+    margin: 0 !important;
+}
+
+.ant-upload img {
+    width: 100% !important;
+}
+
+.ant-form-item-label label {
+    color: #fff !important;
+}
+
+.ant-form-item{
+    margin-bottom: 15px !important;
+}
