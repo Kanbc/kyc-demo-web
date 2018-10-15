@@ -19,6 +19,7 @@ const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
       <meta name="msapplication-TileColor" content="#da532c" />
       <meta name="theme-color" content="#ffffff" />
       <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet" />
+      <link href="/static/antd/dist/antd.min.css" rel="stylesheet" />
     </Head>
     <div className="page-container">
       <div className="boxHeader">

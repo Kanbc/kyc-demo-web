@@ -5,12 +5,14 @@ import moment from 'moment';
 import { Layout } from '../components';
 import { setFieldData } from '../store';
 
-import 'antd/dist/antd.css';
-
 class Index extends Component {
   state = {
-    currentDate: moment(),
+    fields: moment(),
   }
+
+  // componentDidMount() {
+  //   this.props.dispatch(setFieldData(this.fields));
+  // }
 
   render() {
     return (
@@ -51,12 +53,11 @@ class Index extends Component {
   }
 }
 
+// function mapStateToProps(state) {
+//   return {
+//     fields: state.fields,
+//   }
+// }
 
-
-function mapStateToProps(state) {
-  return {
-    fields: state.fields,
-  }
-}
-
-export default connect(mapStateToProps)(Index);
+// export default connect(mapStateToProps)(Index);
+export default Index;
