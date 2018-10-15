@@ -15,8 +15,6 @@ app.prepare()
             const rootStaticFiles = [
                 '/robots.txt',
                 '/sitemap.xml',
-                '/favicon.ico',
-                '/statics/img/favicon/favicon.ico'
             ]
             if (rootStaticFiles.indexOf(parsedUrl.pathname) > -1) {
                 const path = join(__dirname, 'static', parsedUrl.pathname)
