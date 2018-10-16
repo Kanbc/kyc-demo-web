@@ -13,6 +13,14 @@
     color: #fff !important;
 }
 
-.ant-form-item{
+.ant-form-item {
     margin-bottom: 15px !important;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
 }
