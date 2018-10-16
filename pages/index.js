@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Upload, Icon, Button, message, Form, Input, Radio } from 'antd';
+import { Row, Col, Upload, Icon, Button, message, Form, Input } from 'antd';
 import axios from 'axios';
 import { Layout } from '../components';
 
@@ -89,8 +89,10 @@ class Index extends Component {
     }).then(function (response) {
       if (response.status == 200){
         console.log(response.data);
+        
         // case anomally
         if (response.data.normally == 0){
+          message.error(response.data.desc);
           self.setState({
             initial_step: false,
             preview_step: false,
@@ -100,6 +102,7 @@ class Index extends Component {
           });
         }else{
           // case normaly
+          message.success(response.data.desc);
           self.setState({
             initial_step: false,
             preview_step: false,
