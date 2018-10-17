@@ -170,8 +170,8 @@ class Index extends Component {
       <Layout title="Automatic Filling Machine (IDCard)">
         <div className="bodyBox">
           <Row>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8}>
               <Upload
                 name="avatar"
                 listType="picture-card"
@@ -183,12 +183,12 @@ class Index extends Component {
                 {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton}
               </Upload>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
           {/* Upload Button */}
           <Row style={{ marginTop: "30px" }} className={this.state.preview_step == true || this.state.uploading_step == true ? "show" : "hide" }>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8} >
               <Button 
                 onClick={this.handleUpload}
                 disabled={this.state.uploading_step}
@@ -196,30 +196,30 @@ class Index extends Component {
                 {this.state.uploading_step ? 'Uploading' : 'Upload'}
               </Button>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
           {/* Anomaly Case */}
           <Row style={{ marginTop: "30px", textAlign: "left", color: "#ff6477" }} className={this.state.result_case1 == true ? "show" : "hide" }>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8}>
               <p>Invalid photo. Please <a className="linkStyle" href="/">try again</a>.</p>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
           <Row style={{ textAlign: "left", color: "#ff6477" }} className={this.state.result_case1 == true ? "show" : "hide"}>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8} >
               <p>Anomaly confident : 90%</p>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
           {/* Normally Case */}
           <Row style={{ marginTop: "30px", textAlign: "left", color: "#48ff7c" }} className={this.state.result_case2 == true ? "show" : "hide"}>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8} >
               <p>Rotate to : {this.state.rotate_to} degree</p>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
           {/* <Row style={{ textAlign: "left", color: "#48ff7c" }} className={this.state.result_case2 == true ? "show" : "hide" }>
             <Col span={8} />
@@ -236,8 +236,8 @@ class Index extends Component {
             <Col span={8} />
           </Row> */}
           <Row style={{ marginTop: "30px", textAlign: "left" }} className={this.state.result_case2 == true ? "show" : "hide" }>
-            <Col span={8} />
-            <Col span={8}>
+            <Col sm={0} lg={8} />
+            <Col sm={24} lg={8} >
               <Form layout="vertical">
                 <FormItem label="ID" style={{ color: '#fff' }} vertical>
                   <Input placeholder="placeholder"  defaultValue={this.state.card_no}/>
@@ -324,7 +324,7 @@ class Index extends Component {
                 </FormItem>
               </Form>
             </Col>
-            <Col span={8} />
+            <Col sm={0} lg={8} />
           </Row>
         </div>
         <style jsx>
