@@ -350,13 +350,13 @@ class Index extends Component {
                 <Row gutter={16}>
                   <Col span={12} >
                     <FormItem label="วันเกิด" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.bd_day_th +'/'+ this.state.bd_mon_th +'/'+ this.state.bd_year_th} />
+                      <DatePicker defaultValue={moment(this.state.bd_year_th + ' / ' + this.state.bd_mon_th + ' /' + this.state.bd_day_th, 'YYYY/MM/DD')} format='YYYY/MM/DD' />
                       <p className="form-confidence">{this.state.bd_day_th_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={12} >
                     <FormItem label="Birthdate" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.bd_day_en + '/' + this.state.bd_mon_en + '/' + this.state.bd_year_en}/>
+                      <DatePicker defaultValue={moment(this.state.bd_year_en + '/' + this.state.bd_mon_en + '/' + this.state.bd_day_en, 'YYYY/MM/DD')} format='YYYY/MM/DD' />
                       <p className="form-confidence">{this.state.bd_mon_th_prob}%</p>
                     </FormItem>
                   </Col>
