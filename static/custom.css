@@ -24,3 +24,7 @@
 .show {
     display: block;
 }
+
+.ant-calendar-picker {
+    width: 100% !important;
+}

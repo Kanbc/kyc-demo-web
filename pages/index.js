@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker } from 'antd';
+import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker, Divider } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import { Layout } from '../components';
@@ -24,42 +24,22 @@ class Index extends Component {
 
       address_moo: '',
       address_moo_prob: '',
-      address_num: '',
-      address_num_prob: '',
+      address_no: '',
+      address_no_prob: '',
       address_soi: '',
       address_soi_prob: '',
       address_thanon: '',
       address_thanon_prob: '',
       address_trok: '',
       address_trok_prob: '',
-      bd_day_en: '',
-      bd_day_en_prob: '',
-      bd_day_th: '',
-      bd_day_th_prob: '',
-      bd_mon_en: '',
-      bd_mon_en_prob: '',
-      bd_mon_th: '',
-      bd_mon_th_prob: '',
-      bd_year_en: '',
-      bd_year_en_prob: '',
-      bd_year_th: '',
-      bd_year_th_prob: '',
+      birthdate: '',
+      birthdate_prob: '',
       card_no: '',
       card_no_prob: '',
-      date_of_issue_day_th: '',
-      date_of_issue_day_th_prob: '',
-      date_of_issue_mon_th: '',
-      date_of_issue_mon_th_prob: '',
-      date_of_issue_year_th: '',
-      date_of_issue_year_th_prob: '',
-      district: '',
-      district_prob: '',
-      expire_date_day_th: '',
-      expire_date_day_th_prob: '',
-      expire_date_mon_th: '',
-      expire_date_mon_th_prob: '',
-      expire_date_year_th: '',
-      expire_date_year_th_prob: '',
+      date_of_issue: '',
+      date_of_issue_prob: '',
+      expire_date: '',
+      expire_date_prob: '',
       firstname_en: '',
       firstname_en_prob: '',
       firstname_th: '',
@@ -72,12 +52,17 @@ class Index extends Component {
       prefix_en_prob: '',
       prefix_th: '',
       prefix_th_prob: '',
-      province: '',
-      province_prob: '',
       religion: '',
       religion_prob: '',
+      
+      province: '',
+      province_prob: '',
+      district: '',
+      district_prob: '',
       sub_district: '',
       sub_district_prob: '',
+      post_code: '',
+      post_code_prob: '',
     };
   }
 
@@ -97,6 +82,32 @@ class Index extends Component {
     });
   }
 
+  handleDateOfIssue = (dateString) => {
+    this.setState({ date_of_issue: isNaN(dateString) ? dateString : '' });
+  }
+
+  handleExpireDate = (dateString) => {
+    this.setState({ expire_date: isNaN(dateString) ? dateString : '' });
+  }
+
+  handleBirthDate = (dateString) => {
+    this.setState({ birthdate: dateString });
+  }
+
+  colorResult = (probability) => {
+    if (probability > 90){
+      return 'good';
+    }else if(probability > 80 && probability < 90) {
+      return 'avg-good';
+    }else if(probability > 65 && probability <80){
+      return 'avg';
+    }else if(probability > 50 && probability <65){
+      return 'bad-avg';
+    }else{
+      return 'bad';
+    }
+  }
+
   handleUpload = () => {
     this.setState({
       initial_step: false,
@@ -111,8 +122,8 @@ class Index extends Component {
     }
     console.log(data);
     // AJAX
-    axios.post('http://127.0.0.1:8081/ocr-idcard', data,
-    // axios.post('https://asia-northeast1-odini-191806.cloudfunctions.net/connect-afm-codefin-to-https', data, 
+    // axios.post('http://127.0.0.1:8081/ocr-idcard', data,
+    axios.post('https://asia-northeast1-odini-191806.cloudfunctions.net/connect-afm-codefin-to-https', data, 
       {
         headers: {
           'Content-Type': 'application/json'
@@ -149,41 +160,27 @@ class Index extends Component {
             
             address_moo: response.data.result.address_moo !== '' ? response.data.result.address_moo.value : '',
             address_moo_prob: response.data.result.address_moo !== '' ? (100 * parseFloat(response.data.result.address_moo.probability)).toFixed(2) : '',
-            address_num: response.data.result.address_num !== '' ? response.data.result.address_num.value : '',
-            address_num_prob: response.data.result.address_num !== '' ? (100 * parseFloat(response.data.result.address_num.probability)).toFixed(2) : '',
+            address_no: response.data.result.address_no !== '' ? response.data.result.address_no.value : '',
+            address_no_prob: response.data.result.address_no !== '' ? (100 * parseFloat(response.data.result.address_no.probability)).toFixed(2) : '',
             address_soi: response.data.result.address_soi !== '' ? response.data.result.address_soi.value : '',
             address_soi_prob: response.data.result.address_soi !== '' ? (100 * parseFloat(response.data.result.address_soi.probability)).toFixed(2) : '',
             address_thanon: response.data.result.address_thanon !== '' ? response.data.result.address_thanon.value : '',
             address_thanon_prob: response.data.result.address_thanon !== '' ? (100 * parseFloat(response.data.result.address_thanon.probability)).toFixed(2) : '',
             address_trok: response.data.result.address_trok !== '' ? response.data.result.address_trok.value : '',
             address_trok_prob: response.data.result.address_trok !== '' ? (100 * parseFloat(response.data.result.address_trok.probability)).toFixed(2): '',
-            bd_day_en: response.data.result.bd_day_en !== '' ? response.data.result.bd_day_en.value : '',
-            bd_day_en_prob: response.data.result.bd_day_en !== '' ? (100 * parseFloat(response.data.result.bd_day_en.probability)).toFixed(2) : '',
-            bd_day_th: response.data.result.bd_day_th !== '' ? response.data.result.bd_day_th.value : '',
-            bd_day_th_prob: response.data.result.bd_day_th !== '' ? (100 * parseFloat(response.data.result.bd_day_th.probability)).toFixed(2) : '',
-            bd_mon_en: response.data.result.bd_mon_en !== '' ? response.data.result.bd_mon_en.value: '',
-            bd_mon_en_prob: response.data.result.bd_mon_en !== '' ? (100 * parseFloat(response.data.result.bd_mon_en.probability)).toFixed(2) : '',
-            bd_mon_th: response.data.result.bd_mon_th !== '' ? response.data.result.bd_mon_th.value: '',
-            bd_mon_th_prob: response.data.result.bd_mon_th !== '' ? (100 * parseFloat(response.data.result.bd_mon_th.probability)).toFixed(2) : '',
-            bd_year_en: response.data.result.bd_year_en !== '' ? response.data.result.bd_year_en.value: '',
-            bd_year_en_prob: response.data.result.bd_year_en !== '' ? (100 * parseFloat(response.data.result.bd_year_en.probability)).toFixed(2) : '',
-            bd_year_th: response.data.result.bd_year_th !== '' ? response.data.result.bd_year_th.value : '',
-            bd_year_th_prob: response.data.result.bd_year_th !== '' ? (100 * parseFloat(response.data.result.bd_year_th.probability)).toFixed(2) : '',
             
-            date_of_issue_day_th: response.data.result.date_of_issue_day_th !== "" ? response.data.result.date_of_issue_day_th.value : "",
-            date_of_issue_day_th_prob: response.data.result.date_of_issue_day_th !== "" ? (100 * parseFloat(response.data.result.date_of_issue_day_th.probability)).toFixed(2) : "",
-            date_of_issue_mon_th: response.data.result.date_of_issue_mon_th !== '' ? response.data.result.date_of_issue_mon_th.value : '',
-            date_of_issue_mon_th_prob: response.data.result.date_of_issue_mon_th !== '' ? (100 * parseFloat(response.data.result.date_of_issue_mon_th.probability)).toFixed(2) : '',
-            date_of_issue_year_th: response.data.result.date_of_issue_year_th !== '' ? response.data.result.date_of_issue_year_th.value : '',
-            date_of_issue_year_th_prob: response.data.result.date_of_issue_year_th !== '' ? (100 * parseFloat(response.data.result.date_of_issue_year_th.probability)).toFixed(2) : '',
+            birthdate: response.data.result.birth_date !== '' ? response.data.result.birth_date.value : '',
+            birthdate_prob: response.data.result.birth_date !== '' ? (100 * parseFloat(response.data.result.birth_date.probability)).toFixed(2) : '',
+            
+            date_of_issue: response.data.result.date_of_issue !== "" ? response.data.result.date_of_issue.value : "",
+            date_of_issue_prob: response.data.result.date_of_issue !== "" ? (100 * parseFloat(response.data.result.date_of_issue.probability)).toFixed(2) : "",
+
             district: response.data.result.district !== '' ? response.data.result.district.value : '',
             district_prob: response.data.result.district !== '' ? (100 * parseFloat(response.data.result.district.probability)).toFixed(2) : '',
-            expire_date_day_th: response.data.result.expire_date_day_th !== '' ? response.data.result.expire_date_day_th.value: '',
-            expire_date_day_th_prob: response.data.result.expire_date_day_th !== '' ? (100 * parseFloat(response.data.result.expire_date_day_th.probability)).toFixed(2) : '',
-            expire_date_mon_th: response.data.result.expire_date_mon_th !== '' ? response.data.result.expire_date_mon_th.value: '',
-            expire_date_mon_th_prob: response.data.result.expire_date_mon_th !== '' ? (100 * parseFloat(response.data.result.expire_date_mon_th.probability)).toFixed(2) : '',
-            expire_date_year_th: response.data.result.expire_date_year_th !== '' ? response.data.result.expire_date_year_th.value: '',
-            expire_date_year_th_prob: response.data.result.expire_date_year_th !== '' ? (100 * parseFloat(response.data.result.expire_date_year_th.probability)).toFixed(2) : '',
+
+            expire_date: response.data.result.expire_date !== '' ? response.data.result.expire_date.value: '',
+            expire_date_prob: response.data.result.expire_date !== '' ? (100 * parseFloat(response.data.result.expire_date.probability)).toFixed(2) : '',
+
             firstname_en: response.data.result.firstname_en !== '' ? response.data.result.firstname_en.value: '',
             firstname_en_prob: response.data.result.firstname_en !== '' ? (100 * parseFloat(response.data.result.firstname_en.probability)).toFixed(2) :'',
             firstname_th: response.data.result.firstname_th !== '' ? response.data.result.firstname_th.value: '',
@@ -202,6 +199,8 @@ class Index extends Component {
             religion_prob: response.data.result.religion !== '' ? (100 * parseFloat(response.data.result.religion.probability)).toFixed(2) : '',
             sub_district: response.data.result.sub_district !== '' ? response.data.result.sub_district.value: '',
             sub_district_prob: response.data.result.sub_district !== '' ? (100 * parseFloat(response.data.result.sub_district.probability)).toFixed(2) : '',
+            post_code: response.data.result.post_code !== '' ? response.data.result.post_code.value : '',
+            post_code_prob: response.data.result.post_code !== '' ? (100 * parseFloat(response.data.result.post_code.probability)).toFixed(2) : '',
           });
         }        
       }else{
@@ -305,25 +304,25 @@ class Index extends Component {
               <Form layout="vertical">
                 <FormItem label="ID" style={{ color: '#fff' }} vertical>
                   <Input placeholder="placeholder"  defaultValue={this.state.card_no}/>
-                  <p className="form-confidence" >{this.state.card_no_prob}%</p>
+                  <p className={this.colorResult(this.state.card_no_prob)} >{this.state.card_no_prob}%</p>
                 </FormItem>
                 <Row gutter={16}>
                   <Col span={6} >
                     <FormItem label="คำนำหน้า" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.prefix_th}/>
-                      <p className="form-confidence">{this.state.prefix_th_prob}%</p>
+                      <p className={this.colorResult(this.state.prefix_th_prob)}>{this.state.prefix_th_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={9} >
                     <FormItem label="ชื่อ" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.firstname_th} />
-                      <p className="form-confidence">{this.state.firstname_th_prob}%</p>
+                      <p className={this.colorResult(this.state.firstname_th_prob)}>{this.state.firstname_th_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={9} >
                     <FormItem label="นามสกุล" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.lastname_th} />
-                      <p className="form-confidence">{this.state.lastname_th_prob}%</p>
+                      <p className={this.colorResult(this.state.lastname_th_prob)}>{this.state.lastname_th_prob}%</p>
                     </FormItem>
                   </Col>
                 </Row>
@@ -331,61 +330,73 @@ class Index extends Component {
                   <Col span={6} >
                     <FormItem label="Prefix" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.prefix_en} />
-                      <p className="form-confidence">{this.state.prefix_en_prob}%</p>
+                      <p className={this.colorResult(this.state.prefix_en_prob)}>{this.state.prefix_en_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={9} >
                     <FormItem label="Firstname" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.firstname_en}/>
-                      <p className="form-confidence">{this.state.firstname_en_prob}%</p>
+                      <p className={this.colorResult(this.state.firstname_en_prob)}>{this.state.firstname_en_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={9} >
                     <FormItem label="Lastname" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.lastname_en} />
-                      <p className="form-confidence">{this.state.lastname_en_prob}%</p>
+                      <p className={this.colorResult(this.state.lastname_en_prob)}>{this.state.lastname_en_prob}%</p>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
                   <Col span={12} >
                     <FormItem label="วันเกิด" style={{ color: '#fff' }} vertical>
-                      <DatePicker defaultValue={moment(this.state.bd_year_th + ' / ' + this.state.bd_mon_th + ' /' + this.state.bd_day_th, 'YYYY/MM/DD')} format='YYYY/MM/DD' />
-                      <p className="form-confidence">{this.state.bd_day_th_prob}%</p>
+                      {
+                        <DatePicker value={this.state.birthdate && moment(this.state.birthdate, 'YYYY/MM/DD')} defaultValue={this.state.birthdate && moment(this.state.birthdate, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleBirthDate(dateString)} format='YYYY/MM/DD' />
+                      }
+                      <p className={this.colorResult(this.state.birthdate_prob)}>{this.state.birthdate_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={12} >
-                    <FormItem label="Birthdate" style={{ color: '#fff' }} vertical>
-                      <DatePicker defaultValue={moment(this.state.bd_year_en + '/' + this.state.bd_mon_en + '/' + this.state.bd_day_en, 'YYYY/MM/DD')} format='YYYY/MM/DD' />
-                      <p className="form-confidence">{this.state.bd_mon_th_prob}%</p>
+                    <FormItem label="ศาสนา" style={{ color: '#fff' }} vertical>
+                      <Input placeholder="placeholder" defaultValue={this.state.religion} />
+                      <p className={this.colorResult(this.state.religion_prob)}>{this.state.religion_prob}%</p>
                     </FormItem>
                   </Col>
                 </Row>
-                {/* <Row gutter={16}> */}
-                {/* <Col span={12} > */}
-                <FormItem label="ศาสนา" style={{ color: '#fff' }} vertical>
-                  <Input placeholder="placeholder" defaultValue={this.state.religion} />
-                  <p className="form-confidence">{this.state.religion_prob}%</p>
-                </FormItem>
-                {/* </Col> */}
-                {/* </Row> */}
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <FormItem label="วันออกบัตร" style={{ color: '#fff' }} vertical>
+                      {
+                        <DatePicker value={this.state.date_of_issue && moment(this.state.date_of_issue, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleDateOfIssue(dateString)} format='YYYY/MM/DD' />
+                      }
+                      <p className={this.colorResult(this.state.date_of_issue_prob)}>{this.state.date_of_issue_prob}%</p>
+                    </FormItem>
+                  </Col>
+                  <Col span={12}>
+                    <FormItem label="วันหมดอายุบัตร" style={{ color: '#fff' }} vertical>
+                      { 
+                        <DatePicker value={this.state.expire_date && moment(this.state.expire_date, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleExpireDate(dateString)} format='YYYY/MM/DD' /> 
+                      }
+                      <p className={this.colorResult(this.state.expire_date_prob)}>{this.state.expire_date_prob}%</p>
+                    </FormItem>
+                  </Col>
+                </Row>
                 <Row gutter={16}>
                   <Col span={8}>
                     <FormItem label="เลขที่อยู่" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_num}/>
-                      <p className="form-confidence">{this.state.address_num_prob}%</p>
+                      <Input placeholder="placeholder" defaultValue={this.state.address_no} />
+                      <p className={this.colorResult(this.state.address_no_prob)}>{this.state.address_no_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={8}>
                     <FormItem label="หมู่ที่" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.address_moo} />
-                      <p className="form-confidence">{this.state.address_moo_prob}%</p>
+                      <p className={this.colorResult(this.state.address_moo_prob)}>{this.state.address_moo_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={8}>
                     <FormItem label="ซอย" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_soi}/>
-                      <p className="form-confidence">{this.state.address_soi_prob}%</p>
+                      <Input placeholder="placeholder" defaultValue={this.state.address_soi} />
+                      <p className={this.colorResult(this.state.address_soi_prob)}>{this.state.address_soi_prob}%</p>
                     </FormItem>
                   </Col>
                 </Row>
@@ -393,49 +404,47 @@ class Index extends Component {
                   <Col span={12}>
                     <FormItem label="ตรอก/แยก" style={{ color: '#fff' }} vertical>
                       <Input placeholder="placeholder" defaultValue={this.state.address_trok} />
-                      <p className="form-confidence">{this.state.address_trok_prob}%</p>
+                      <p className={this.colorResult(this.state.address_trok_prob)}>{this.state.address_trok_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="ถนน" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_thanon}/>
-                      <p className="form-confidence">{this.state.address_thanon_prob}%</p>
+                      <Input placeholder="placeholder" defaultValue={this.state.address_thanon} />
+                      <p className={this.colorResult(this.state.address_thanon_prob)}>{this.state.address_thanon_prob}%</p>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
+                  <Divider />
                   <Col span={12}>
                     <FormItem label="แขวง/ตำบล" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.sub_district}/>
-                      <p className="form-confidence">{this.state.sub_district_prob}%</p>
+                      <Input placeholder="placeholder" defaultValue={this.state.sub_district} />
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="เขต/อำเภอ" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.district}/>
-                      <p className="form-confidence">{this.state.district_prob}%</p>
+                      <Input placeholder="placeholder" defaultValue={this.state.district} />
                     </FormItem>
                   </Col>
                 </Row>
-                <FormItem label="จังหวัด" style={{ color: '#fff' }} vertical>
-                  <Input placeholder="placeholder" defaultValue={this.state.province}/>
-                  <p className="form-confidence">{this.state.province_prob}%</p>
-                </FormItem>
                 <Row gutter={16}>
                   <Col span={12}>
-                    <FormItem label="วันออกบัตร" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.date_of_issue_day_th + '/' + this.state.date_of_issue_mon_th + '/' + this.state.date_of_issue_year_th} />
-                      <p className="form-confidence">{this.state.date_of_issue_day_th_prob}%</p>
+                    <FormItem label="จังหวัด" style={{ color: '#fff' }} vertical>
+                      <Input placeholder="placeholder" defaultValue={this.state.province} />
                     </FormItem>
                   </Col>
                   <Col span={12}>
-                    <FormItem label="วันหมดอายุบัตร" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.expire_date_day_th + '/' + this.state.expire_date_mon_th + '/' + this.state.expire_date_year_th}/>
-                      <p className="form-confidence">{this.state.expire_date_day_th_prob}%</p>
+                    <FormItem label="รหัสไปรษณีย์" style={{ color: '#fff' }} vertical>
+                      <Input placeholder="placeholder" defaultValue={this.state.post_code} />
                     </FormItem>
                   </Col>
                 </Row>
-                <FormItem vertical>
+                <Row gutter={16}>
+                  <Col span={24}>
+                    <p className={this.colorResult(this.state.province_prob)} style={{textAlign:"center"}}>Address Confident : {this.state.province_prob}%</p>
+                  </Col>
+                </Row>
+                <FormItem vertical style={{marginTop: "30px"}}>
                   <Button href="/" block>Submit</Button>
                 </FormItem>
               </Form>
@@ -452,8 +461,28 @@ class Index extends Component {
               text-decoration: underline;
               color: #ff6477;
             }
-            .form-confidence{
-              color: #48ff7c; 
+            .good{
+              color: #00FF00; 
+              margin-top: 5px;
+              font-size: 10px;
+            }
+            .avg-good{
+              color: #7FFF00; 
+              margin-top: 5px;
+              font-size: 10px;
+            }
+            .avg{
+              color: #FFFF00; 
+              margin-top: 5px;
+              font-size: 10px;
+            }
+            .bad-avg{
+              color: #FFF000; 
+              margin-top: 5px;
+              font-size: 10px;
+            }
+            .bad{
+              color: #FF0000; 
               margin-top: 5px;
               font-size: 10px;
             }

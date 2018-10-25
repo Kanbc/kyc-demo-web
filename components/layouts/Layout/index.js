@@ -5,7 +5,7 @@ import Footer from './Footer';
 
 moment.locale('th');
 
-const Layout = ({ children, title = 'Automatic Filling Machine (IDCard)' }) => (
+const Layout = ({ children, title = 'AFM' }) => (
   <div className="root">
     <Head>
       <title>{`Codefin - ${title}`}</title>
