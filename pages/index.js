@@ -19,6 +19,7 @@ class Index extends Component {
       result_case2: false,
 
       // Form Value
+      normally_confidence: '',
       rotate_to: '',
       rotate_to_prob: '',
 
@@ -121,7 +122,9 @@ class Index extends Component {
       instances: [{ b64: this.state.imageUrl.split(',')[1] }]
     }
     console.log(data);
+    
     // AJAX
+    var normally = 0
     // axios.post('http://127.0.0.1:8081/ocr-idcard', data,
     axios.post('https://asia-northeast1-odini-191806.cloudfunctions.net/connect-afm-codefin-to-https', data, 
       {
@@ -131,9 +134,12 @@ class Index extends Component {
     }).then( (response) => {
       if (response.status == 200){
         console.log(response.data);
+        console.log(normally);
+        normally = response.data.normally.value;
+        console.log(normally);
         
         // case anomally
-        if (response.data.normally == 0){
+        if (normally == 0){
           message.error(response.data.desc);
           this.setState({
             initial_step: false,
@@ -141,6 +147,7 @@ class Index extends Component {
             uploading_step: false,
             result_case1: true,
             result_case2: false,
+            normally_confidence: (100 * (1 - parseFloat(response.data.normally.probability))).toFixed(2),
           });
         }else{
           // case normaly
@@ -153,6 +160,7 @@ class Index extends Component {
             result_case1: false,
             result_case2: true,
 
+            normally_confidence: (100 * parseFloat(response.data.normally.probability)).toFixed(2),
             rotate_to: response.data.rotate_to.angle,
             rotate_to_prob: (100 * parseFloat(response.data.rotate_to.probability)).toFixed(2),
             card_no: response.data.result.card_no !== '' ? response.data.result.card_no.value : '',
@@ -272,7 +280,7 @@ class Index extends Component {
           <Row style={{ textAlign: "left", color: "#ff6477" }} className={this.state.result_case1 == true ? "show" : "hide"}>
             <Col sm={0} lg={8} />
             <Col sm={24} lg={8} >
-              <p>Anomaly confident : -</p>
+              <p>Anomaly confident : {this.state.normally_confidence}%</p>
             </Col>
             <Col sm={0} lg={8} />
           </Row>
@@ -280,21 +288,21 @@ class Index extends Component {
           <Row style={{ marginTop: "30px", textAlign: "left", color: "#48ff7c" }} className={this.state.result_case2 == true ? "show" : "hide"}>
             <Col sm={0} lg={8} />
             <Col sm={24} lg={8} >
-              <p>Normally confident : -</p>
+              <p className={this.colorResult(this.state.normally_confidence)}>Normally confident : {this.state.normally_confidence}%</p>
             </Col>
             <Col sm={0} lg={8} />
           </Row>
           <Row style={{ textAlign: "left", color: "#48ff7c" }} className={this.state.result_case2 == true ? "show" : "hide" }>
             <Col sm={0} lg={8} />
             <Col sm={24} lg={8}>
-              <p>Rotate to : {this.state.rotate_to} degree</p>
+              <p className={this.colorResult(this.state.rotate_to_prob)}>Rotate to : {this.state.rotate_to} degree</p>
             </Col>
             <Col sm={0} lg={8} />
           </Row>
           <Row style={{ textAlign: "left", color: "#48ff7c" }} className={this.state.result_case2 == true ? "show" : "hide" }>
             <Col sm={0} lg={8} />
             <Col sm={24} lg={8} >
-              <p>Orientation confident : {this.state.rotate_to_prob}%</p>
+              <p className={this.colorResult(this.state.rotate_to_prob)}>Orientation confident : {this.state.rotate_to_prob}%</p>
             </Col>
             <Col sm={0} lg={8} />
           </Row>
@@ -303,46 +311,47 @@ class Index extends Component {
             <Col sm={24} lg={8} >
               <Form layout="vertical">
                 <FormItem label="ID" style={{ color: '#fff' }} vertical>
-                  <Input placeholder="placeholder"  defaultValue={this.state.card_no}/>
-                  <p className={this.colorResult(this.state.card_no_prob)} >{this.state.card_no_prob}%</p>
+                  <Input  defaultValue={this.state.card_no}/>
+                  <p className={this.colorResult(this.state.card_no_prob)} >{this.state.card_no_prob == 0 ? '' : this.state.card_no_prob + '%'}</p>
                 </FormItem>
                 <Row gutter={16}>
-                  <Col span={6} >
+                  <Col span={12}>
                     <FormItem label="คำนำหน้า" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.prefix_th}/>
-                      <p className={this.colorResult(this.state.prefix_th_prob)}>{this.state.prefix_th_prob}%</p>
+                      <Input defaultValue={this.state.prefix_th} />
+                      <p className={this.colorResult(this.state.prefix_th_prob)}>Prefix Confident : {this.state.prefix_th_prob == 0 ? '' : this.state.prefix_th_prob + '%'}</p>
                     </FormItem>
                   </Col>
-                  <Col span={9} >
-                    <FormItem label="ชื่อ" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.firstname_th} />
-                      <p className={this.colorResult(this.state.firstname_th_prob)}>{this.state.firstname_th_prob}%</p>
-                    </FormItem>
-                  </Col>
-                  <Col span={9} >
-                    <FormItem label="นามสกุล" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.lastname_th} />
-                      <p className={this.colorResult(this.state.lastname_th_prob)}>{this.state.lastname_th_prob}%</p>
+                  <Col span={12}>
+                    <FormItem label="Prefix" style={{ color: '#fff' }} vertical>
+                      <Input defaultValue={this.state.prefix_en} />
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Col span={6} >
-                    <FormItem label="Prefix" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.prefix_en} />
-                      <p className={this.colorResult(this.state.prefix_en_prob)}>{this.state.prefix_en_prob}%</p>
+                  <Col span={12} >
+                    <FormItem label="ชื่อ" style={{ color: '#fff' }} vertical>
+                      <Input defaultValue={this.state.firstname_th} />
+                      <p className={this.colorResult(this.state.firstname_th_prob)}>{this.state.firstname_th_prob == 0 ? '' : this.state.firstname_th_prob + '%'}</p>
                     </FormItem>
                   </Col>
-                  <Col span={9} >
+                  <Col span={12} >
+                    <FormItem label="นามสกุล" style={{ color: '#fff' }} vertical>
+                      <Input defaultValue={this.state.lastname_th} />
+                      <p className={this.colorResult(this.state.lastname_th_prob)}>{this.state.lastname_th_prob == 0 ? '' : this.state.lastname_th_prob + '%'}</p>
+                    </FormItem>
+                  </Col>
+                </Row>
+                <Row gutter={16}>
+                  <Col span={12} >
                     <FormItem label="Firstname" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.firstname_en}/>
-                      <p className={this.colorResult(this.state.firstname_en_prob)}>{this.state.firstname_en_prob}%</p>
+                      <Input defaultValue={this.state.firstname_en}/>
+                      <p className={this.colorResult(this.state.firstname_en_prob)}>{this.state.firstname_en_prob == 0 ? '' : this.state.firstname_en_prob + '%'}</p>
                     </FormItem>
                   </Col>
-                  <Col span={9} >
+                  <Col span={12} >
                     <FormItem label="Lastname" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.lastname_en} />
-                      <p className={this.colorResult(this.state.lastname_en_prob)}>{this.state.lastname_en_prob}%</p>
+                      <Input defaultValue={this.state.lastname_en} />
+                      <p className={this.colorResult(this.state.lastname_en_prob)}>{this.state.lastname_en_prob == 0 ? '' : this.state.lastname_en_prob + '%'}</p>
                     </FormItem>
                   </Col>
                 </Row>
@@ -352,13 +361,13 @@ class Index extends Component {
                       {
                         <DatePicker value={this.state.birthdate && moment(this.state.birthdate, 'YYYY/MM/DD')} defaultValue={this.state.birthdate && moment(this.state.birthdate, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleBirthDate(dateString)} format='YYYY/MM/DD' />
                       }
-                      <p className={this.colorResult(this.state.birthdate_prob)}>{this.state.birthdate_prob}%</p>
+                      <p className={this.colorResult(this.state.birthdate_prob)}>{this.state.birthdate_prob == 0 ? '' : this.state.birthdate_prob + '%'}</p>
                     </FormItem>
                   </Col>
                   <Col span={12} >
                     <FormItem label="ศาสนา" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.religion} />
-                      <p className={this.colorResult(this.state.religion_prob)}>{this.state.religion_prob}%</p>
+                      <Input defaultValue={this.state.religion_prob == 0 ? '' : this.state.religion} />
+                      <p className={this.colorResult(this.state.religion_prob)}>{this.state.religion_prob == 0 ? '' : this.state.religion_prob + '%'}</p>
                     </FormItem>
                   </Col>
                 </Row>
@@ -366,82 +375,77 @@ class Index extends Component {
                   <Col span={12}>
                     <FormItem label="วันออกบัตร" style={{ color: '#fff' }} vertical>
                       {
-                        <DatePicker value={this.state.date_of_issue && moment(this.state.date_of_issue, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleDateOfIssue(dateString)} format='YYYY/MM/DD' />
+                        <DatePicker value={this.state.date_of_issue_prob == 0 ? '' : moment(this.state.date_of_issue, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleDateOfIssue(dateString)} format='YYYY/MM/DD' />
                       }
-                      <p className={this.colorResult(this.state.date_of_issue_prob)}>{this.state.date_of_issue_prob}%</p>
+                      <p className={this.colorResult(this.state.date_of_issue_prob)}>{this.state.date_of_issue_prob == 0 ? '' : this.state.date_of_issue_prob + '%'}</p>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="วันหมดอายุบัตร" style={{ color: '#fff' }} vertical>
                       { 
-                        <DatePicker value={this.state.expire_date && moment(this.state.expire_date, 'YYYY/MM/DD')} onChange={(_, dateString) => this.handleExpireDate(dateString)} format='YYYY/MM/DD' /> 
+                        <DatePicker value={this.state.expire_date_prob == 0 ? '' : moment(this.state.expire_date, 'YYYY/MM/DD') } onChange={(_, dateString) => this.handleExpireDate(dateString)} format='YYYY/MM/DD' /> 
                       }
-                      <p className={this.colorResult(this.state.expire_date_prob)}>{this.state.expire_date_prob}%</p>
+                      <p className={this.colorResult(this.state.expire_date_prob)}>{this.state.expire_date_prob == 0 ? '' : this.state.expire_date_prob + '%'}</p>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
                   <Col span={8}>
                     <FormItem label="เลขที่อยู่" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_no} />
-                      <p className={this.colorResult(this.state.address_no_prob)}>{this.state.address_no_prob}%</p>
+                      <Input defaultValue={this.state.address_no} />
+                      <p className={this.colorResult(this.state.address_no_prob)}>{this.state.address_no_prob == 0 ? '' : this.state.address_no_prob + '%'}</p>
                     </FormItem>
                   </Col>
                   <Col span={8}>
                     <FormItem label="หมู่ที่" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_moo} />
-                      <p className={this.colorResult(this.state.address_moo_prob)}>{this.state.address_moo_prob}%</p>
+                      <Input defaultValue={this.state.address_moo} />
+                      <p className={this.colorResult(this.state.address_moo_prob)}>{this.state.address_moo_prob == 0 ? '' : this.state.address_moo_prob + '%'}</p>
                     </FormItem>
                   </Col>
                   <Col span={8}>
                     <FormItem label="ซอย" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_soi} />
-                      <p className={this.colorResult(this.state.address_soi_prob)}>{this.state.address_soi_prob}%</p>
+                      <Input defaultValue={this.state.address_soi} />
+                      <p className={this.colorResult(this.state.address_soi_prob)}>{this.state.address_soi_prob == 0 ? '' : this.state.address_soi_prob + '%'}</p>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
                   <Col span={12}>
                     <FormItem label="ตรอก/แยก" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_trok} />
-                      <p className={this.colorResult(this.state.address_trok_prob)}>{this.state.address_trok_prob}%</p>
+                      <Input  defaultValue={this.state.address_trok} />
+                      <p className={this.colorResult(this.state.address_trok_prob)}>{this.state.address_trok_prob == 0 ? '' : this.state.address_trok_prob +'%'}</p>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="ถนน" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.address_thanon} />
-                      <p className={this.colorResult(this.state.address_thanon_prob)}>{this.state.address_thanon_prob}%</p>
+                      <Input defaultValue={this.state.address_thanon} />
+                      <p className={this.colorResult(this.state.address_thanon_prob)}>{this.state.address_thanon_prob == 0 ? '' : this.state.address_thanon_prob + '%'}</p>
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
-                  <Divider />
                   <Col span={12}>
                     <FormItem label="แขวง/ตำบล" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.sub_district} />
+                      <Input defaultValue={this.state.sub_district} />
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="เขต/อำเภอ" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.district} />
+                      <Input defaultValue={this.state.district} />
                     </FormItem>
                   </Col>
                 </Row>
                 <Row gutter={16}>
                   <Col span={12}>
                     <FormItem label="จังหวัด" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.province} />
+                      <Input defaultValue={this.state.province} />
+                      <p className={this.colorResult(this.state.province_prob)}>Address Confident : {this.state.province_prob}%</p>
                     </FormItem>
                   </Col>
                   <Col span={12}>
                     <FormItem label="รหัสไปรษณีย์" style={{ color: '#fff' }} vertical>
-                      <Input placeholder="placeholder" defaultValue={this.state.post_code} />
+                      <Input defaultValue={this.state.post_code} />
                     </FormItem>
-                  </Col>
-                </Row>
-                <Row gutter={16}>
-                  <Col span={24}>
-                    <p className={this.colorResult(this.state.province_prob)} style={{textAlign:"center"}}>Address Confident : {this.state.province_prob}%</p>
                   </Col>
                 </Row>
                 <FormItem vertical style={{marginTop: "30px"}}>
