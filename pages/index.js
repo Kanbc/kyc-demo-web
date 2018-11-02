@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker } from 'antd';
 import ExifOrientationImg from 'react-exif-orientation-img'
 import moment from 'moment';
+import exif from 'exif-js';
 import axios from 'axios';
 import { Layout } from '../components';
 
@@ -252,8 +253,8 @@ class Index extends Component {
                 beforeUpload={false}
                 onChange={this.handleChange}
               >
-                {/* {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton} */}
-                {imageUrl ? <ExifOrientationImg id="c" src={imageUrl} alt="avatar" /> : uploadButton}
+                {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton}
+                {/* {imageUrl ? <ExifOrientationImg id="c" src={imageUrl} alt="avatar" /> : uploadButton} */}
               </Upload>
             </Col>
             <Col sm={0} lg={8} />
