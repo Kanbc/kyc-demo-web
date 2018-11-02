@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker, Divider } from 'antd';
+import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker } from 'antd';
+import ExifOrientationImg from 'react-exif-orientation-img'
 import moment from 'moment';
 import axios from 'axios';
 import { Layout } from '../components';
@@ -237,7 +238,7 @@ class Index extends Component {
     const imageUrl = this.state.imageUrl;
 
     return (
-      <Layout title="Automatic Filling Machine (IDCard)">
+      <Layout title="AFM">
         <div className="bodyBox">
           <Row>
             <Col sm={0} lg={8} />
@@ -251,7 +252,8 @@ class Index extends Component {
                 beforeUpload={false}
                 onChange={this.handleChange}
               >
-                {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton}
+                {/* {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton} */}
+                {imageUrl ? <ExifOrientationImg id="c" src={imageUrl} alt="avatar" /> : uploadButton}
               </Upload>
             </Col>
             <Col sm={0} lg={8} />
