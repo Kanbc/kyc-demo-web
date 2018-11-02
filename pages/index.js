@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker } from 'antd';
-import ExifOrientationImg from 'react-exif-orientation-img'
 import moment from 'moment';
-import exif from 'exif-js';
+// import Jimp from 'jimp';
+import imageFileToBase64 from 'image-file-to-base64-exif'
 import axios from 'axios';
 import { Layout } from '../components';
 
@@ -19,6 +19,7 @@ class Index extends Component {
       uploading_step: false,
       result_case1: false,
       result_case2: false,
+      imageUrl: null,
 
       // Form Value
       normally_confidence: '',
@@ -71,10 +72,24 @@ class Index extends Component {
 
   handleChange = (info) => {
     beforeUpload(info.file.originFileObj);
-    getBase64(info.file.originFileObj, imageUrl => this.setState({
-      imageUrl,
-      loading: false,
-    }));
+    
+    this.setState({
+      imageUrl: null,
+      loading: true
+    });
+    
+    imageFileToBase64(info.file.originFileObj,720,720,1)
+    .then(res => {
+      this.setState({
+        imageUrl: res,
+        loading: false
+      })
+    });
+    
+    // getBase64(info.file.originFileObj, imageUrl => this.setState({
+    //   imageUrl,
+    //   loading: false,
+    // }));
 
     this.setState({ 
       initial_step: false,
@@ -254,7 +269,6 @@ class Index extends Component {
                 onChange={this.handleChange}
               >
                 {imageUrl ? <img id="c" src={imageUrl} alt="avatar" /> : uploadButton}
-                {/* {imageUrl ? <ExifOrientationImg id="c" src={imageUrl} alt="avatar" /> : uploadButton} */}
               </Upload>
             </Col>
             <Col sm={0} lg={8} />
@@ -519,10 +533,13 @@ function beforeUpload(file) {
   return !(isJPG || isPNG) && isLt2M;
 }
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
+// function getBase64(img, callback) {
+//   const reader = new FileReader();
+//   reader.addEventListener('load', () => callback(reader.result));
+//   reader.readAsDataURL(img);
+//   // reader.readAsBinaryString(img);
+//   // console.log(reader.readyState);
+//   // console.log(reader.readAsDataURL(img));
+// }
 
 export default Index;
