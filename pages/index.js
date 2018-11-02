@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Upload, Icon, Button, message, Form, Input, DatePicker } from 'antd';
 import moment from 'moment';
-// import Jimp from 'jimp';
+import Jimp from 'jimp';
 import imageFileToBase64 from 'image-file-to-base64-exif'
 import axios from 'axios';
 import { Layout } from '../components';
@@ -150,10 +150,7 @@ class Index extends Component {
       }
     }).then( (response) => {
       if (response.status == 200){
-        console.log(response.data);
-        console.log(normally);
         normally = response.data.normally.value;
-        console.log(normally);
         
         // case anomally
         if (normally == 0){
@@ -167,7 +164,19 @@ class Index extends Component {
             normally_confidence: (100 * (1 - parseFloat(response.data.normally.probability))).toFixed(2),
           });
         }else{
-          // case normaly
+          // Case Normally
+          // -- Rotate Image
+          var buf = Buffer.from(this.state.imageUrl.split(',')[1], 'base64');
+          Jimp.read(buf).then(image => {
+            image.rotate(parseInt(this.state.rotate_to)).getBase64(Jimp.AUTO, (err,b64img) => {
+              this.setState({
+                imageUrl: b64img
+              });
+            });          
+          }).catch(err => {
+            message.error(err);
+          });
+
           message.success(response.data.desc);
 
           this.setState({
@@ -529,7 +538,6 @@ function beforeUpload(file) {
   if (!isLt2M) {
     message.error('Image must smaller than 4MB!');
   }
-  console.log((isJPG || isPNG) && isLt2M);
   return !(isJPG || isPNG) && isLt2M;
 }
 
