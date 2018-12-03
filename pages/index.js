@@ -143,7 +143,7 @@ class Index extends Component {
     // AJAX
     var normally = 0
     // axios.post('http://127.0.0.1:8081/ocr-idcard', data,
-    axios.post('https://asia-northeast1-odini-191806.cloudfunctions.net/connect-afm-codefin-to-https', data, 
+    axios.post('https://ml.odini-site.com/idcard-for-web', data, 
       {
         headers: {
           'Content-Type': 'application/json'
